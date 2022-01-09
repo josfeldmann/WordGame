@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00eaadc750a54ca4399ecd2dc0b5b771, type: 3}
+  m_Name: EnglishKeyboard
+  m_EditorClassIdentifier: 
+  keyDataRow:
+  - keyData:
+    - normalChar: 81
+      shiftChar: 81
+      keyType: 0
+    - normalChar: 87
+      shiftChar: 87
+      keyType: 0
+    - normalChar: 69
+      shiftChar: 69
+      keyType: 0
+    - normalChar: 82
+      shiftChar: 82
+      keyType: 0
+    - normalChar: 84
+      shiftChar: 84
+      keyType: 0
+    - normalChar: 89
+      shiftChar: 89
+      keyType: 0
+    - normalChar: 85
+      shiftChar: 85
+      keyType: 0
+    - normalChar: 73
+      shiftChar: 73
+      keyType: 0
+    - normalChar: 79
+      shiftChar: 79
+      keyType: 0
+    - normalChar: 80
+      shiftChar: 80
+      keyType: 0
+  - keyData:
+    - normalChar: 65
+      shiftChar: 65
+      keyType: 0
+    - normalChar: 83
+      shiftChar: 83
+      keyType: 0
+    - normalChar: 68
+      shiftChar: 68
+      keyType: 0
+    - normalChar: 70
+      shiftChar: 70
+      keyType: 0
+    - normalChar: 71
+      shiftChar: 71
+      keyType: 0
+    - normalChar: 72
+      shiftChar: 72
+      keyType: 0
+    - normalChar: 74
+      shiftChar: 74
+      keyType: 0
+    - normalChar: 75
+      shiftChar: 75
+      keyType: 0
+    - normalChar: 76
+      shiftChar: 76
+      keyType: 0
+  - keyData:
+    - normalChar: 90
+      shiftChar: 90
+      keyType: 0
+    - normalChar: 88
+      shiftChar: 88
+      keyType: 0
+    - normalChar: 67
+      shiftChar: 67
+      keyType: 0
+    - normalChar: 86
+      shiftChar: 86
+      keyType: 0
+    - normalChar: 66
+      shiftChar: 66
+      keyType: 0
+    - normalChar: 78
+      shiftChar: 78
+      keyType: 0
+    - normalChar: 77
+      shiftChar: 77
+      keyType: 0
+    - normalChar: 77
+      shiftChar: 77
+      keyType: 6
