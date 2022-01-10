@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 
 [System.Serializable]
-public enum WORDBUTTONSTATE { GREEN = 0, YELLOW = 1, EMPTY = 3}
+public enum WORDBUTTONSTATE { GREEN = 2, YELLOW = 1, EMPTY = 0}
 
 public class WordGridButton : MonoBehaviour {
     public Image backImage, borderImage;

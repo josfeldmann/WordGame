@@ -6,16 +6,11 @@ using UnityEngine.UI;
 
 public class WordGridManager : MonoBehaviour {
 
-    public const string NUMBEROFPUZZLESPLAYED = "NUMBERPUZZLES", NUMBERWINS = "NUMBERWIN", WIN1 = "WIN1", WIN2 = "WIN2", WIN3 = "WIN3", WIN4 = "WIN4", WIN5 = "WIN5", WIN6 = "WIN6", CURRENTSTREAK = "CURRENTSTREAK", LARGESTSTREAK = "LARGESTSTREAK", HARDMODE = "HARDMODE", DICTIONARYCHECK = "DICTIONARYCHECK";
+    public const string NUMBEROFPUZZLESPLAYED = "NUMBERPUZZLES", NUMBERWINS = "NUMBERWIN", WIN1 = "WIN1", WIN2 = "WIN2", WIN3 = "WIN3", WIN4 = "WIN4", WIN5 = "WIN5", WIN6 = "WIN6", CURRENTSTREAK = "CURRENTSTREAK", LARGESTSTREAK = "LARGESTSTREAK", HARDMODE = "HARDMODE", DICTIONARYCHECK = "DICTIONARYCHECK", MONTH = "MONTH", DAY = "DAY", YEAR = "YEAR", SELECTEDLENGTH = "SELECTEDLENGTH";
 
 
 
-    public static List<string> commonWords = new List<string>();
-    public static List<string> answerWords = new List<string>();
-    public static bool initYet = false;
-
-
-    public List<WordBank> wordbanks = new List<WordBank>();
+    public GameMasterManager manager;
     public int numberofguesses = 5;
     public string currentWord = "";
     public Transform wordRowGroupingTransform;
@@ -33,11 +28,14 @@ public class WordGridManager : MonoBehaviour {
     public GameObject winScreen;
     public GameObject guessDistribution;
     public TextMeshProUGUI NumTotal, winPercentText, currentStreakText, largestStreakText, winTitle, lossText;
+    public float winLingerTime = 1f;
+    public GameObject BackToWinScreenButton;
 
     [Header("Word Text")]
     public GameObject errorWindow;
     public TextMeshProUGUI errorText;
     public float errorLingerTime = 0.5f;
+    
     float errorTimer = 0;
     bool showingError = false;
 
@@ -59,16 +57,21 @@ public class WordGridManager : MonoBehaviour {
         }
     }
 
-    public void Setup() {
-       // PlayerPrefs.DeleteAll();
+    bool isDaily;
+
+
+    public void Setup(string s, bool isDaily) {
+        // PlayerPrefs.DeleteAll();
+        currentWord = s;
         winScreen.SetActive(false);
+        BackToWinScreenButton.SetActive(false);
         vertGroup.enabled = true;
-        currentWord = GetWord();
+        
         print(currentWord);
         errorWindow.SetActive(false);
         int numberPlayed = GetInt(NUMBEROFPUZZLESPLAYED) + 1;
         SetInt(NUMBEROFPUZZLESPLAYED, numberPlayed);
-        
+        keyboard.gameObject.SetActive(true);
         currentWord = currentWord.ExceptChars(new List<char> { ' ', '\n', '\t' });
         currentWord = currentWord.Substring(0, currentWord.Length);
         CreateWordRows();
@@ -123,39 +126,7 @@ public class WordGridManager : MonoBehaviour {
 
     }
 
-    public string GetWord() {
-
-        if (!initYet) {
-            commonWords = new List<string>();
-            answerWords = new List<string>();
-            foreach (WordBank b in wordbanks) {
-                string contents = b.commonWordText.text;
-                string[] w = contents.Split("\n");
-                foreach (string s in w) {
-                    //print(s);
-                    string sss = s.ToUpper();
-                    sss = sss.Substring(0, b.wordLength);
-                    commonWords.Add(sss);
-                    answerWords.Add(sss);
-                }
-
-                contents = b.answerWordText.text;
-                w = contents.Split("\n");
-                foreach (string s in w) {
-                   // print(s);
-                    string sss = s.ToUpper();
-                    sss = sss.Substring(0, b.wordLength);
-                    answerWords.Add(sss);
-                }
-            }
-
-            initYet = true;
-        }
-
-        return commonWords.PickRandom();
-        
-       
-    }
+    
 
 
     public void PlayerPressEnter() {
@@ -164,7 +135,7 @@ public class WordGridManager : MonoBehaviour {
             print("here");
             bool ddddd = true;
             string s = keyboard.buildString.ToUpper();
-            if (GetBool(DICTIONARYCHECK) && !answerWords.Contains(s) && !commonWords.Contains(s)) {
+            if (GetBool(DICTIONARYCHECK) && !GameMasterManager.answerWords[currentWord.Length].Contains(s) && !GameMasterManager.commonWords[currentWord.Length].Contains(s)) {
                 rows[currentRow].Shake();
                 ShowError("Not in word list");
                 ddddd = false;
@@ -312,11 +283,19 @@ public class WordGridManager : MonoBehaviour {
     }
 
 
+    public void HideWinScreen() {
+        BackToWinScreenButton.SetActive(true);
+        winScreen.gameObject.SetActive(false);
+    }
 
+    public void ReShowWinScreen() {
+        BackToWinScreenButton.SetActive(false);
+        winScreen.gameObject.SetActive(true);
+    }
 
 
     public void PlayAgain() {
-        Setup();
+        Setup(manager.GetWord(), false); ;
     }
 
 }
@@ -360,6 +339,9 @@ public class WinState : State<WordGridManager> {
     }
 
     public IEnumerator ShowScreen(StateMachine<WordGridManager> obj) {
+
+        yield return new WaitForSeconds(obj.target.winLingerTime);
+
         obj.target.errorWindow.SetActive(false);
         if (win) {
             obj.target.winTitle.SetText("You Win!");
@@ -418,16 +400,37 @@ public class WinState : State<WordGridManager> {
             float percent = (numberWinsGuess) / numberOfWins;
             obj.target.bars[i].Set(numberWinsGuess, percent);
         }
-
+        obj.target.keyboard.gameObject.SetActive(false);
 
         obj.target.winScreen.SetActive(true);
+
+        obj.target.BackToWinScreenButton.SetActive(false);
     }
 
     public override void Enter(StateMachine<WordGridManager> obj) {
 
 
         obj.target.StartCoroutine(ShowScreen(obj));
+        LastPuzzle l = new LastPuzzle();
+        l.grid = new WORDBUTTONSTATE[obj.target.currentWord.Length, obj.target.currentRow];
         
+        for (int y = 0; y < obj.target.currentRow; y++) {
+            for (int x = 0; x < obj.target.currentWord.Length;x++) {
+            
+                switch (obj.target.rows[y].wordgridButtons[x].state) {
+                    case WORDBUTTONSTATE.GREEN:
+                        l.grid[x, y] = WORDBUTTONSTATE.GREEN;
+                        break;
+                    case WORDBUTTONSTATE.YELLOW:
+                        l.grid[x, y] = WORDBUTTONSTATE.YELLOW;
+                        break;
+                    case WORDBUTTONSTATE.EMPTY:
+                        l.grid[x, y] = WORDBUTTONSTATE.EMPTY;
+                        break;
+                }
+            }
+        }
+        obj.target.manager.SaveLastPuzzle(l);
 
 
     }
