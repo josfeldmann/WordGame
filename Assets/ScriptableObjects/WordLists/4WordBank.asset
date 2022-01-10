@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wordBankName: 4Letter
   commonWordText: {fileID: 4900000, guid: 9407484fbf20d424a8b678c75e14e312, type: 3}
-  answerWordText: {fileID: 0}
+  answerWordText: {fileID: 4900000, guid: a72e744b5d7aabe40a1f514728b0007e, type: 3}
   wordLength: 4
