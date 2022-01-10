@@ -17,6 +17,8 @@ public class GameMasterManager : MonoBehaviour
     public DateTime currentTime;
     public bool DailyDisabled = false;
     public Button dailyButton;
+    public GameObject Tutorial;
+
 
     private void Start() {
        // PlayerPrefs.DeleteAll();
@@ -86,6 +88,15 @@ public class GameMasterManager : MonoBehaviour
         dailyTimerText.gameObject.SetActive(DailyDisabled);
 
 
+    }
+
+
+    public void OpenTutorial() {
+        Tutorial.SetActive(true);
+    }
+
+    public void CloseTutorial() {
+        Tutorial.SetActive(false);
     }
 
     public static Vector3Int dateVector;
