@@ -10,6 +10,5 @@ This is a project I threw together in a weekend. Its a wordle clone written in t
 All of the code is licensed under the a [CC0](https://creativecommons.org/share-your-work/public-domain/cc0/) license which requires no attribution is required. Some of the images found in the Assets/Sprites folder do require attribution. The info for them can be found in Sources.txt.
 
 
-![alt text](Screens/key.png)
 ![alt text](Screens/mainmenu.PNG) 
 ![alt text](Screens/tutorial.png) 
