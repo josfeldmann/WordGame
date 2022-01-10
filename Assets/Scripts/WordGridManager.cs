@@ -246,7 +246,7 @@ public class WordGridManager : MonoBehaviour {
             }
             result += '\n';
         }
-
+        result.CopyToClipboard();
         ClipboardExtension.CopyToClipboard(result);
     }
 

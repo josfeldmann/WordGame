@@ -178,7 +178,7 @@ public class GameMasterManager : MonoBehaviour
 
 
     public string GetLastPuzzleSavePath() {
-        return Application.dataPath + jsonSaveFileName;
+        return Application.persistentDataPath +"/"+ jsonSaveFileName;
     }
 
     public LastPuzzle GetDefaultLastPuzzle() {
@@ -321,7 +321,7 @@ public class GameMasterManager : MonoBehaviour
 
     public void DeleteProgress() {
 
-        SetStringVars(new List<string>() { WordGridManager.CURRENTSTREAK, WordGridManager.LARGESTSTREAK, WordGridManager.NUMBEROFPUZZLESPLAYED, WordGridManager.NUMBERWINS, WordGridManager.WIN1, WordGridManager.WIN2, WordGridManager.WIN3, WordGridManager.WIN4, WordGridManager.WIN5, WordGridManager.WIN6 }, 0);
+        SetStringVars(new List<string>() { WordGridManager.CURRENTSTREAK, WordGridManager.LARGESTSTREAK, WordGridManager.NUMBEROFPUZZLESPLAYED, WordGridManager.NUMBERWINS, WordGridManager.WIN1, WordGridManager.WIN2, WordGridManager.WIN3, WordGridManager.WIN4, WordGridManager.WIN5, WordGridManager.WIN6, WordGridManager.DAY, WordGridManager.MONTH, WordGridManager.YEAR }, 0);
 
 
 
