@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,7 +31,7 @@ public class WordGridManager : MonoBehaviour {
     public float winLingerTime = 1f;
     public GameObject BackToWinScreenButton;
     public float maxColumnHeight = 1260f;
-
+    public GameObject mainMenuButton;
     [Header("Word Text")]
     public GameObject errorWindow;
     public TextMeshProUGUI errorText;
@@ -60,6 +61,16 @@ public class WordGridManager : MonoBehaviour {
     bool isDaily;
 
     public const float  defaultGridSize = 200f;
+
+
+    public void BackToMainMenu() {
+
+        SetInt(CURRENTSTREAK, 0);
+        manager.GoToMainMenu();
+    
+    
+    }
+
 
     public void Setup(string s, bool isDaily) {
         print("Screen Width " + canvas.GetComponent<RectTransform>().rect.width);
@@ -299,9 +310,49 @@ public class WordGridManager : MonoBehaviour {
             }
             result += '\n';
         }
+        try { 
         result.CopyToClipboard();
+        } catch {
+
+        }
+        try { 
         ClipboardExtension.CopyToClipboard(result);
+        } catch {
+
+        }
+        try {
+            TextEditor t = new TextEditor();
+            t.text = result;
+            t.SelectAll();
+            t.Copy();
+        } catch {
+
+        }
+
+        try {
+#if UNITY_WEBGL
+            passCopyToBrowser(result);
+#endif
+        } catch {
+            
+        }
+
     }
+
+
+#if UNITY_WEBGL
+
+    class StringCallback {
+
+    }
+
+
+    [DllImport("__Internal")]
+    private static extern void initWebGLCopyAndPaste(StringCallback cutCopyCallback, StringCallback pasteCallback);
+    [DllImport("__Internal")]
+    private static extern void passCopyToBrowser(string str);
+#endif
+
 
     public void SetInt(string s, int val) {
         PlayerPrefs.SetInt(s, val);
@@ -357,6 +408,7 @@ public class WordGridManager : MonoBehaviour {
 public class EnterWordState : State<WordGridManager> {
     public override void Enter(StateMachine<WordGridManager> obj) {
         obj.target.keyboard.SetBuildString("");
+        obj.target.mainMenuButton.SetActive(true);
         obj.target.canEnterWords = true;
         obj.target.keyboard.ReEnable();
         obj.target.keyboard.doneButton.gameObject.SetActive(true);
@@ -364,7 +416,7 @@ public class EnterWordState : State<WordGridManager> {
 
     public override void Exit(StateMachine<WordGridManager> obj) {
         obj.target.canEnterWords = false;
-
+        obj.target.mainMenuButton.SetActive(false);
         obj.target.keyboard.doneButton.gameObject.SetActive(false);
     }
 }

@@ -20,6 +20,10 @@ public class GameMasterManager : MonoBehaviour
     public GameObject Tutorial;
 
 
+    public void Quit() {
+        Application.Quit();
+    }
+
     private void Start() {
         //PlayerPrefs.DeleteAll();
 
