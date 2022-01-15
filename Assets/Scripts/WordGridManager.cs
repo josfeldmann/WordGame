@@ -6,23 +6,22 @@ using UnityEngine.UI;
 
 public class WordGridManager : MonoBehaviour {
 
-    public const string NUMBEROFPUZZLESPLAYED = "NUMBERPUZZLES", NUMBERWINS = "NUMBERWIN", WIN1 = "WIN1", WIN2 = "WIN2", WIN3 = "WIN3", WIN4 = "WIN4", WIN5 = "WIN5", WIN6 = "WIN6", CURRENTSTREAK = "CURRENTSTREAK", LARGESTSTREAK = "LARGESTSTREAK", HARDMODE = "HARDMODE", DICTIONARYCHECK = "DICTIONARYCHECK", MONTH = "MONTH", DAY = "DAY", YEAR = "YEAR", SELECTEDLENGTH = "SELECTEDLENGTH";
+    public const string NUMBEROFPUZZLESPLAYED = "NUMBERPUZZLES", NUMBERWINS = "NUMBERWIN", WIN1 = "WIN1", WIN2 = "WIN2", WIN3 = "WIN3", WIN4 = "WIN4", WIN5 = "WIN5", WIN6 = "WIN6", CURRENTSTREAK = "CURRENTSTREAK", LARGESTSTREAK = "LARGESTSTREAK", HARDMODE = "HARDMODE", DICTIONARYCHECK = "DICTIONARYCHECK", MONTH = "MONTH", DAY = "DAY", YEAR = "YEAR", SELECTEDLENGTH = "SELECTEDLENGTH1", NUMBEROFGUESSES = "NUMBEROFGUESSES";
 
 
 
     public GameMasterManager manager;
-    public int numberofguesses = 5;
     public string currentWord = "";
     public Transform wordRowGroupingTransform;
     public int currentRow;
     public CanvasKeyboard.CanvasKeyboard keyboard;
     public StateMachine<WordGridManager> controller;
-
+    public Canvas canvas;
     [Header("Word Rows")]
     public VerticalLayoutGroup vertGroup;
     public WordRow wordRowPrefab;
     public List<WordRow> rows = new List<WordRow>();
-
+    public RectTransform keyboardParent;
     [Header("WinScreen")]
     public List<GuessDistributionBar> bars = new List<GuessDistributionBar>();
     public GameObject winScreen;
@@ -30,6 +29,7 @@ public class WordGridManager : MonoBehaviour {
     public TextMeshProUGUI NumTotal, winPercentText, currentStreakText, largestStreakText, winTitle, lossText;
     public float winLingerTime = 1f;
     public GameObject BackToWinScreenButton;
+    public float maxColumnHeight = 1260f;
 
     [Header("Word Text")]
     public GameObject errorWindow;
@@ -59,9 +59,12 @@ public class WordGridManager : MonoBehaviour {
 
     bool isDaily;
 
+    public const float  defaultGridSize = 200f;
 
     public void Setup(string s, bool isDaily) {
+        print("Screen Width " + canvas.GetComponent<RectTransform>().rect.width);
         // PlayerPrefs.DeleteAll();
+        
         currentWord = s;
         winScreen.SetActive(false);
         BackToWinScreenButton.SetActive(false);
@@ -82,6 +85,38 @@ public class WordGridManager : MonoBehaviour {
         controller = new StateMachine<WordGridManager>(new EnterWordState(), this);
         keyboard.SetAllKeysNormal();
         necessaryCharacter = new HashSet<char>();
+
+        float screenWidth = canvas.GetComponent<RectTransform>().rect.width;
+        float gridsize = defaultGridSize;
+        float rowLength = (defaultGridSize + 10) * currentWord.Length;
+       // print(rowLength);
+        if (rowLength > screenWidth) {
+            gridsize = (int)((screenWidth - (10 * currentWord.Length))/currentWord.Length);
+            print(gridsize);
+        }
+
+        float columnlength = (gridsize + 10) * GameMasterManager.numberOfGuesses;
+        print("Column Length: " + columnlength.ToString());
+        if (columnlength > maxColumnHeight) {
+
+            float currGridSize = gridsize;
+            gridsize = (maxColumnHeight - (10 * GameMasterManager.numberOfGuesses)) / GameMasterManager.numberOfGuesses;
+
+
+        }
+
+
+
+        foreach (WordRow w in rows) {
+            w.SetGridSize(gridsize);
+        }
+
+        if (screenWidth < 1080) {
+            keyboardParent.transform.localScale = new Vector3(screenWidth / 1080f, screenWidth / 1080f, 1);
+        } else {
+            keyboardParent.transform.localScale = Vector3.one;
+        }
+
     }
 
     public void ShowError(string s) {
@@ -100,7 +135,7 @@ public class WordGridManager : MonoBehaviour {
 
     public IEnumerator LayoutWorkAround() {
         yield return null;
-        for (int i = 0; i < numberofguesses; i++) {
+        for (int i = 0; i < GameMasterManager.numberOfGuesses; i++) {
             rows[i].gameObject.SetActive(true);
         }
         yield return null;
@@ -109,7 +144,7 @@ public class WordGridManager : MonoBehaviour {
 
     public void CreateWordRows() {
 
-        int toadd = numberofguesses - rows.Count;
+        int toadd = GameMasterManager.numberOfGuesses - rows.Count;
         for (int i = 0; i < toadd; i++) {
             WordRow row = Instantiate(wordRowPrefab, wordRowGroupingTransform);
             rows.Add(row);
@@ -119,7 +154,7 @@ public class WordGridManager : MonoBehaviour {
             r.gameObject.SetActive(false);
         }
 
-        for (int i = 0; i < numberofguesses; i++) {
+        for (int i = 0; i < GameMasterManager.numberOfGuesses; i++) {
             rows[i].SetSize(currentWord.Length);
         }
         StartCoroutine(LayoutWorkAround());
@@ -135,7 +170,7 @@ public class WordGridManager : MonoBehaviour {
             print("here");
             bool ddddd = true;
             string s = keyboard.buildString.ToUpper();
-            if (GetBool(DICTIONARYCHECK) && !GameMasterManager.answerWords[currentWord.Length].Contains(s) && !GameMasterManager.commonWords[currentWord.Length].Contains(s)) {
+            if (GetBool(DICTIONARYCHECK) && currentWord.Length < 6 && !GameMasterManager.answerWords[currentWord.Length].Contains(s) && !GameMasterManager.commonWords[currentWord.Length].Contains(s)) {
                 rows[currentRow].Shake();
                 ShowError("Not in word list");
                 ddddd = false;
@@ -168,6 +203,24 @@ public class WordGridManager : MonoBehaviour {
 
     public float flipSpeed = 2f;
 
+
+    public bool YellowCheck(string input, int i) {
+
+        char a = input[i];
+
+
+        for (int x = 0; x < input.Length; x++) {
+            if (x != i && currentWord[x] == a) {
+                if (input[x] != currentWord[x]) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
     public IEnumerator WordAnimationFlip() {
 
 
@@ -190,7 +243,7 @@ public class WordGridManager : MonoBehaviour {
                 currentButton.SetCorrect(inputString[i]);
                 keyboard.GreenChar(inputString[i]);
                 necessaryCharacter.Add(inputString[i]);
-            } else if (currentWord.Contains(inputString[i])) {
+            } else if (currentWord.Contains(inputString[i]) && YellowCheck(inputString, i)) {
                 currentButton.SetSemiCorrect(inputString[i]);
                 keyboard.YellowChar(inputString[i]);
                 necessaryCharacter.Add(inputString[i]);
@@ -215,7 +268,7 @@ public class WordGridManager : MonoBehaviour {
         if (inputString == currentWord) {
            
             controller.ChangeState(new WinState(true));
-        } else if (currentRow < numberofguesses) {
+        } else if (currentRow < GameMasterManager.numberOfGuesses) {
             controller.ChangeState(new EnterWordState());
         } else {
             controller.ChangeState(new WinState(false));

@@ -80,11 +80,13 @@ MonoBehaviour:
   currentSize: 0
   gridButtonPrefab: {fileID: 1873096789429458827, guid: 09e29b0791125094b88cf8491d01c8eb, type: 3}
   wordgridButtons: []
+  rect: {fileID: 8519547569195525466}
   shakeTime: 0.25
   direction: 1
   shakeAmount: 25
   shakeSpeed: 400
   currentTarget: 0
+  storedString: 
 --- !u!114 &3567127033648248571
 MonoBehaviour:
   m_ObjectHideFlags: 0

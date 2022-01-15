@@ -7,7 +7,7 @@ public class WordRow : MonoBehaviour {
     public int currentSize = 0;
     public WordGridButton gridButtonPrefab;
     public List<WordGridButton> wordgridButtons;
-
+    public RectTransform rect;
     bool shaking = false;
     public float shakeTime = 1f;
     float stopshaketime = 0;
@@ -77,6 +77,13 @@ public class WordRow : MonoBehaviour {
             } else {
                 wordgridButtons[i].SetEmpty();
             }
+        }
+    }
+
+    public void SetGridSize(float gridsize) {
+        rect.sizeDelta = new Vector2(rect.rect.width, gridsize);
+        foreach (WordGridButton w in wordgridButtons) {
+            w.SetSize(gridsize);
         }
     }
 }

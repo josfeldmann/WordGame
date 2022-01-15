@@ -95,6 +95,8 @@ MonoBehaviour:
   borderImage: {fileID: 1873096789429458824}
   text: {fileID: 1873096789632507969}
   selectedChar: 0
+  state: 0
+  rect: {fileID: 1873096789429458826}
 --- !u!1 &1873096789632507971
 GameObject:
   m_ObjectHideFlags: 0

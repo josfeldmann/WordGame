@@ -12,7 +12,7 @@ public class WordGridButton : MonoBehaviour {
     public TextMeshProUGUI text;
     public char selectedChar;
     public WORDBUTTONSTATE state = WORDBUTTONSTATE.EMPTY;
-
+    public RectTransform rect;
     public void SetEmpty() {
         text.SetText("");
         backImage.color = WordColors.instance.BLACK;
@@ -46,5 +46,9 @@ public class WordGridButton : MonoBehaviour {
         backImage.color = WordColors.instance.BLACK;
         borderImage.color = WordColors.instance.GREY;
         state = WORDBUTTONSTATE.EMPTY;
+    }
+
+    public void SetSize(float gridsize) {
+        rect.sizeDelta = new Vector2(gridsize, gridsize);
     }
 }

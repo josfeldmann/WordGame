@@ -21,7 +21,7 @@ public class GameMasterManager : MonoBehaviour
 
 
     private void Start() {
-       // PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
 
         if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer) {
             scaler.matchWidthOrHeight = 0;
@@ -29,9 +29,12 @@ public class GameMasterManager : MonoBehaviour
             scaler.matchWidthOrHeight = 1;
         }
 
-        if (!gridManger.HasInt(WordGridManager.SELECTEDLENGTH)) gridManger.SetInt(WordGridManager.SELECTEDLENGTH, 1);
+        if (!gridManger.HasInt(WordGridManager.SELECTEDLENGTH)) gridManger.SetInt(WordGridManager.SELECTEDLENGTH, 4);
+        if (!gridManger.HasInt(WordGridManager.NUMBEROFGUESSES)) gridManger.SetInt(WordGridManager.NUMBEROFGUESSES, 5);
         dropDown.SetValueWithoutNotify(gridManger.GetInt(WordGridManager.SELECTEDLENGTH));
+        numberOfGuessesDropDown.SetValueWithoutNotify(gridManger.GetInt(WordGridManager.NUMBEROFGUESSES));
         SetLength(gridManger.GetInt(WordGridManager.SELECTEDLENGTH));
+        SetNumberOfGuesses(gridManger.GetInt(WordGridManager.NUMBEROFGUESSES));
 
         InitializeStringVars(new List<string>() { WordGridManager.CURRENTSTREAK, WordGridManager.LARGESTSTREAK, WordGridManager.NUMBEROFPUZZLESPLAYED, WordGridManager.NUMBERWINS, WordGridManager.WIN1, WordGridManager.WIN2, WordGridManager.WIN3, WordGridManager.WIN4, WordGridManager.WIN5, WordGridManager.WIN6 });
         if (!gridManger.HasBool(WordGridManager.DICTIONARYCHECK)) {
@@ -100,13 +103,13 @@ public class GameMasterManager : MonoBehaviour
     }
 
     public static Vector3Int dateVector;
-    public static int selectedLength = 5;
+    public static int selectedLength = 5, numberOfGuesses = 6;
     public static Dictionary<int, List<string>> commonWords = new Dictionary<int, List<string>>();
     public static Dictionary<int, List<string>> answerWords = new Dictionary<int, List<string>>();
     public static bool initYet = false;
 
 
-    public TMP_Dropdown dropDown;
+    public TMP_Dropdown dropDown, numberOfGuessesDropDown;
 
     public List<WordBank> wordbanks = new List<WordBank>();
 
@@ -122,15 +125,53 @@ public class GameMasterManager : MonoBehaviour
 
     public void SetLength(int i) {
         if (i == 0) {
-            selectedLength = 4;
+            selectedLength = 1;
         } else if (i == 1) {
-            selectedLength = 5;
+            selectedLength = 2;
         } else if (i == 2) {
+            selectedLength = 3;
+        } else if ( i == 3) {
+            selectedLength = 4;
+        } else if (i == 4) {
+            selectedLength = 5;
+        } else if (i == 5) {
             selectedLength = 6;
+        } else if (i == 6) {
+            selectedLength = 7;
+        } else if (i == 7) {
+            selectedLength = 8;
         }
+
 
         gridManger.SetInt(WordGridManager.SELECTEDLENGTH, i);
 
+    }
+
+
+    public void SetNumberOfGuesses(int i) {
+        if (i == 0) {
+            numberOfGuesses = 1;
+        } else if (i == 1) {
+            numberOfGuesses = 2;
+        } else if (i == 2) {
+            numberOfGuesses = 3;
+        } else if (i == 3) {
+            numberOfGuesses = 4;
+        } else if (i == 4) {
+            numberOfGuesses = 5;
+        } else if (i == 5) {
+            numberOfGuesses = 6;
+        } else if (i == 6) {
+            numberOfGuesses = 7;
+        } else if (i == 7) {
+            numberOfGuesses = 8;
+        } else if (i == 8) {
+            numberOfGuesses = 9;
+        } else if (i == 9) {
+            numberOfGuesses = 10;
+        }
+
+        gridManger.SetInt(WordGridManager.NUMBEROFGUESSES, i);
     }
 
 
