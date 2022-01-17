@@ -12,7 +12,7 @@ public class GameMasterManager : MonoBehaviour
     public GameObject mainMenu, gameMenu, optionsMenu;
     public WordGridManager gridManger;
     public Toggle hardModeToggle, dictionaryCheckToggle;
-    public CanvasScaler scaler;
+    //public CanvasScaler scaler;
     public TextMeshProUGUI dailytext, dailyTimerText;
     public DateTime currentTime;
     public bool DailyDisabled = false;
@@ -28,9 +28,9 @@ public class GameMasterManager : MonoBehaviour
         //PlayerPrefs.DeleteAll();
 
         if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer) {
-            scaler.matchWidthOrHeight = 0;
+           // scaler.matchWidthOrHeight = 0;
         } else if (Application.platform != RuntimePlatform.WindowsEditor && Application.platform != RuntimePlatform.OSXEditor && Application.platform != RuntimePlatform.LinuxEditor) {
-            scaler.matchWidthOrHeight = 1;
+            //scaler.matchWidthOrHeight = 1;
         }
 
         if (!gridManger.HasInt(WordGridManager.SELECTEDLENGTH)) gridManger.SetInt(WordGridManager.SELECTEDLENGTH, 4);

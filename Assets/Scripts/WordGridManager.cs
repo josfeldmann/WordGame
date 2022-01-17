@@ -30,8 +30,9 @@ public class WordGridManager : MonoBehaviour {
     public TextMeshProUGUI NumTotal, winPercentText, currentStreakText, largestStreakText, winTitle, lossText;
     public float winLingerTime = 1f;
     public GameObject BackToWinScreenButton;
-    public float maxColumnHeight = 1260f;
+    public float maxColumnHeight = 1160f;
     public GameObject mainMenuButton;
+    public Transform backTransform;
     [Header("Word Text")]
     public GameObject errorWindow;
     public TextMeshProUGUI errorText;
@@ -168,6 +169,7 @@ public class WordGridManager : MonoBehaviour {
         for (int i = 0; i < GameMasterManager.numberOfGuesses; i++) {
             rows[i].SetSize(currentWord.Length);
         }
+        backTransform.SetSiblingIndex(backTransform.parent.childCount);
         StartCoroutine(LayoutWorkAround());
 
     }
