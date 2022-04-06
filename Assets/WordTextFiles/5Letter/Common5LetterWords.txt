@@ -5,6 +5,7 @@ Anger
 Apple
 Award
 Basis
+Bawdy
 Beach
 Birth
 Block
@@ -77,14 +78,10 @@ Image
 Index
 Input
 Issue
-Japan
-Jones
 Judge
 Knife
-Laura
 Layer
 Level
-Lewis
 Light
 Limit
 Lunch
@@ -253,7 +250,6 @@ Judge
 Laugh
 Learn
 Leave
-Let’s
 Limit
 Marry
 Match
@@ -409,11 +405,8 @@ Whole
 Wrong
 Young
 Aback
-Abaft
-Aboon
 About
 Above
-Accel
 Adown
 Afoot
 Afore
@@ -421,11 +414,8 @@ Afoul
 After
 Again
 Agape
-Agogo
 Agone
 Ahead
-Ahull
-Alife
 Alike
 Aline
 Aloft
@@ -436,7 +426,6 @@ Aloud
 Amiss
 Amply
 Amuck
-Apace
 Apart
 Aptly
 Arear
@@ -444,7 +433,6 @@ Aside
 Askew
 Awful
 Badly
-Bally
 Below
 Canny
 Cheap
@@ -469,7 +457,6 @@ Forth
 Fresh
 Fully
 Funny
-Gaily
 Gayly
 Godly
 Great
@@ -518,7 +505,6 @@ Since
 Sleek
 Slyly
 Small
-So-So
 Sound
 Spang
 Srsly
@@ -531,7 +517,6 @@ There
 Thick
 Tight
 Today
-Tomoz
 Truly
 Twice
 Under
