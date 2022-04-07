@@ -15,6 +15,7 @@ public class WordRow : MonoBehaviour {
     public float shakeAmount = 50f;
     public float shakeSpeed = 200f;
     public float currentTarget = 0;
+
     public void Shake() {
         shaking = true;
         stopshaketime = Time.time + shakeTime;
@@ -36,7 +37,7 @@ public class WordRow : MonoBehaviour {
                     MoveTowardsTarget();
                 }
             }
-        } 
+        }
     }
 
     public void MoveTowardsZeroX() {
