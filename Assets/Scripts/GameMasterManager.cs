@@ -6,8 +6,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameMasterManager : MonoBehaviour
-{
+public class GameMasterManager : MonoBehaviour {
+
     public StateMachine<GameMasterManager> controller;
     public GameObject mainMenu, gameMenu, optionsMenu;
     public WordGridManager gridManger;
@@ -18,7 +18,6 @@ public class GameMasterManager : MonoBehaviour
     public bool DailyDisabled = false;
     public Button dailyButton;
     public GameObject Tutorial;
-
 
     public void Quit() {
         Application.Quit();
@@ -59,8 +58,6 @@ public class GameMasterManager : MonoBehaviour
         if (!gridManger.HasInt(WordGridManager.MONTH)) gridManger.SetInt(WordGridManager.MONTH, 0);
         if (!gridManger.HasInt(WordGridManager.YEAR)) gridManger.SetInt(WordGridManager.YEAR, 0);
 
-       
-
         controller = new StateMachine<GameMasterManager>(new MainMenuState(), this);
         GoToMainMenu();
         GetWord();
@@ -93,10 +90,7 @@ public class GameMasterManager : MonoBehaviour
             dailySeed = v.GetHashCode();
         }
         dailyTimerText.gameObject.SetActive(DailyDisabled);
-
-
     }
-
 
     public void OpenTutorial() {
         Tutorial.SetActive(true);
@@ -112,13 +106,11 @@ public class GameMasterManager : MonoBehaviour
     public static Dictionary<int, List<string>> answerWords = new Dictionary<int, List<string>>();
     public static bool initYet = false;
 
-
     public TMP_Dropdown dropDown, numberOfGuessesDropDown;
 
     public List<WordBank> wordbanks = new List<WordBank>();
 
     public string GetWord() {
-
         if (!initYet) {
             InitializeWordBanks();
         }
@@ -126,26 +118,10 @@ public class GameMasterManager : MonoBehaviour
         return commonWords[selectedLength].PickRandom();
     }
 
-
     public void SetLength(int i) {
-        if (i == 0) {
-            selectedLength = 1;
-        } else if (i == 1) {
-            selectedLength = 2;
-        } else if (i == 2) {
-            selectedLength = 3;
-        } else if ( i == 3) {
-            selectedLength = 4;
-        } else if (i == 4) {
-            selectedLength = 5;
-        } else if (i == 5) {
-            selectedLength = 6;
-        } else if (i == 6) {
-            selectedLength = 7;
-        } else if (i == 7) {
-            selectedLength = 8;
+        if (i >= 0 && i <= 7) {
+            selectedLength = i + 1;
         }
-
 
         gridManger.SetInt(WordGridManager.SELECTEDLENGTH, i);
 
@@ -153,26 +129,8 @@ public class GameMasterManager : MonoBehaviour
 
 
     public void SetNumberOfGuesses(int i) {
-        if (i == 0) {
-            numberOfGuesses = 1;
-        } else if (i == 1) {
-            numberOfGuesses = 2;
-        } else if (i == 2) {
-            numberOfGuesses = 3;
-        } else if (i == 3) {
-            numberOfGuesses = 4;
-        } else if (i == 4) {
-            numberOfGuesses = 5;
-        } else if (i == 5) {
-            numberOfGuesses = 6;
-        } else if (i == 6) {
-            numberOfGuesses = 7;
-        } else if (i == 7) {
-            numberOfGuesses = 8;
-        } else if (i == 8) {
-            numberOfGuesses = 9;
-        } else if (i == 9) {
-            numberOfGuesses = 10;
+        if (i >= 0 && i <= 9) {
+            numberOfGuesses = i + 1;
         }
 
         gridManger.SetInt(WordGridManager.NUMBEROFGUESSES, i);
@@ -182,8 +140,8 @@ public class GameMasterManager : MonoBehaviour
     public void InitializeWordBanks() {
         commonWords = new Dictionary<int, List<string>>();
         answerWords = new Dictionary<int, List<string>>();
-        foreach (WordBank b in wordbanks) {
 
+        foreach (WordBank b in wordbanks) {
             int len = b.wordLength;
             if (!commonWords.ContainsKey(len)) {
                 commonWords.Add(len, new List<string>());
@@ -195,7 +153,6 @@ public class GameMasterManager : MonoBehaviour
             string contents = b.commonWordText.text;
             string[] w = contents.Split("\n");
             foreach (string s in w) {
-                //print(s);
                 string sss = s.ToUpper();
                 sss = sss.Substring(0, b.wordLength);
                 commonWords[len].Add(sss);
@@ -206,7 +163,6 @@ public class GameMasterManager : MonoBehaviour
                 contents = b.answerWordText.text;
                 w = contents.Split("\n");
                 foreach (string s in w) {
-                    // print(s);
                     string sss = s.ToUpper();
                     sss = sss.Substring(0, b.wordLength);
                     answerWords[len].Add(sss);
@@ -217,22 +173,16 @@ public class GameMasterManager : MonoBehaviour
         initYet = true;
     }
 
-
-
     public static string jsonSaveFileName = "LASTPUZZLE.json";
-
 
     public string GetLastPuzzleSavePath() {
         return Application.persistentDataPath +"/"+ jsonSaveFileName;
     }
 
     public LastPuzzle GetDefaultLastPuzzle() {
-
-
         LastPuzzle last = new LastPuzzle();
         last.grid = new WORDBUTTONSTATE[5, 6];
         return last;
-
     }
 
     public GridLayoutGroup gridgroup;
@@ -241,7 +191,6 @@ public class GameMasterManager : MonoBehaviour
     public List<Image> spawnedImages = new List<Image>();
 
     public void GetLastPuzzleForDisplay() {
-
         LastPuzzle puzzle = null;
 
         if (File.Exists(GetLastPuzzleSavePath())) {
@@ -289,11 +238,7 @@ public class GameMasterManager : MonoBehaviour
                 }
             }
         }
-
-
     }
-
-
 
     public void SetHardMode(bool b) {
         gridManger.SetBool(WordGridManager.HARDMODE, b);
@@ -313,18 +258,12 @@ public class GameMasterManager : MonoBehaviour
 
     public void SetStringVars(List<string> s, int val) {
         foreach (string ss in s) {
-                gridManger.SetInt(ss, val);
+            gridManger.SetInt(ss, val);
         }
     }
 
-
     private void Update() {
         controller.Update();
-
-        
-
-
-
     }
 
     public void HideAll() {
@@ -365,11 +304,7 @@ public class GameMasterManager : MonoBehaviour
     }
 
     public void DeleteProgress() {
-
         SetStringVars(new List<string>() { WordGridManager.CURRENTSTREAK, WordGridManager.LARGESTSTREAK, WordGridManager.NUMBEROFPUZZLESPLAYED, WordGridManager.NUMBERWINS, WordGridManager.WIN1, WordGridManager.WIN2, WordGridManager.WIN3, WordGridManager.WIN4, WordGridManager.WIN5, WordGridManager.WIN6, WordGridManager.DAY, WordGridManager.MONTH, WordGridManager.YEAR }, 0);
-
-
-
     }
 
     public void SaveLastPuzzle(LastPuzzle l) {
@@ -410,17 +345,7 @@ public class OptionsState : State<GameMasterManager> {
 
 }
 
-
-
 [System.Serializable]
 public class LastPuzzle {
-
-
     public WORDBUTTONSTATE[,] grid;
-
-
 }
-
-
-
-
